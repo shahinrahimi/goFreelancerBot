@@ -89,7 +89,7 @@ func FetchOwners(apiKey string, ownerIDs []int) ([]Owner, error) {
 		return nil, err
 	}
 
-	fmt.Println((string(body))[:1000])
+	fmt.Println((string(body))[:5000])
 
 	var response ResponseUsers
 	err = json.Unmarshal(body, &response)

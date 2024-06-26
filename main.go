@@ -52,6 +52,10 @@ func main() {
 	if err != nil {
 		log.Fatal("Error fetching owners", err)
 	}
+
+	for _, owner := range owners {
+		fmt.Println(owner.ID, owner.Username, owner.Location.Country.Name)
+	}
 	fmt.Println(len(owners))
 	fmt.Println(len(focusedProjects), len(otherProjects))
 	fmt.Println(CountCommonIDs(focusedProjects, otherProjects))
