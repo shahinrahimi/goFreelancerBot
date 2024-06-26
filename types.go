@@ -2,21 +2,22 @@ package main
 
 import "time"
 
-type ProjectsResult struct {
-	Projects []Project
+type ResultProjects struct {
+	Projects   []Project `json:"projects"`
+	TotalCount int       `json:"total_count"`
 }
-type OwnersResult struct {
-	Owners []Owner
+
+type ResultUsers struct {
+	Users map[string]Owner `json:"users"`
 }
 type ResponseProjects struct {
 	Status string         `json:"status"`
-	Result ProjectsResult `json:"result"`
+	Result ResultProjects `json:"result"`
 }
-type ResponseOwners struct {
-	Status string `json:"status"`
-	Result OwnersResult
+type ResponseUsers struct {
+	Status string      `json:"status"`
+	Result ResultUsers `json:"result"`
 }
-
 type Currency struct {
 	ID           int     `json:"id"`
 	Code         string  `json:"code"`

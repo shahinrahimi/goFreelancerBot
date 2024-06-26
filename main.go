@@ -16,9 +16,44 @@ func main() {
 	if apiKey == "" {
 		log.Fatal("FREELANCER_API_KEY environment variable not set")
 	}
-	projects, err := FetchProjects(apiKey)
+	focusedSkills := []string{
+		"react",
+		"go",
+		"javascript",
+	}
+	focusedProjects, err := FetchProjects(apiKey, focusedSkills)
 	if err != nil {
 		log.Fatal("Error fetching projects", err)
 	}
-	fmt.Println(len(projects))
+	// other skills
+	otherSkills := []string{
+		"vba",
+		"python",
+		"libreoffice",
+		"excel",
+		"shiny",
+		"scrapping",
+	}
+	otherProjects, err := FetchProjects(apiKey, otherSkills)
+	if err != nil {
+		log.Fatal("Error fetching projects", err)
+	}
+
+	for index, project := range otherProjects {
+		fmt.Println(index, project.Title)
+	}
+	ownerIDs := []int{}
+	for index, project := range focusedProjects {
+		ownerIDs = append(ownerIDs, project.OwnerID)
+		fmt.Println(index, project.OwnerID, project.Budget.Maximum, project.Title)
+	}
+
+	owners, err := FetchOwners(apiKey, ownerIDs)
+	if err != nil {
+		log.Fatal("Error fetching owners", err)
+	}
+	fmt.Println(len(owners))
+	fmt.Println(len(focusedProjects), len(otherProjects))
+	fmt.Println(CountCommonIDs(focusedProjects, otherProjects))
+
 }
