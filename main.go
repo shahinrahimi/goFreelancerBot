@@ -9,12 +9,17 @@ import (
 )
 
 func main() {
+
 	if err := godotenv.Load(".env"); err != nil {
 		log.Fatal("Environmental .env not found!")
 	}
 	apiKey := os.Getenv("FREELANCER_API_KEY")
 	if apiKey == "" {
 		log.Fatal("FREELANCER_API_KEY environment variable not set")
+	}
+
+	if err := FetchJobs(apiKey); err != nil {
+		log.Fatal(err)
 	}
 	focusedSkills := []string{
 		"react",
@@ -33,6 +38,9 @@ func main() {
 		"excel",
 		"shiny",
 		"scrapping",
+		"react",
+		"go",
+		"javascript",
 	}
 	otherProjects, err := FetchProjects(apiKey, otherSkills)
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -105,6 +106,29 @@ func FetchOwners(apiKey string, ownerIDs []int) ([]Owner, error) {
 	return owners, nil
 }
 
+func FetchJobs(apiKey string) error {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "https://www.freelancer.com/api/projects/0.1/projects/active/", nil)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("freelancer-oauth-v1", apiKey)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(body))
+
+	return nil
+}
+
 func CountCommonIDs(arr1, arr2 []Project) int {
 	idMap := make(map[int]bool)
 	for _, proj := range arr1 {
@@ -118,4 +142,20 @@ func CountCommonIDs(arr1, arr2 []Project) int {
 		}
 	}
 	return commonCount
+}
+
+func CreateDirecryIfNotExist(directory string) error {
+	// check if directory exist
+	if _, err := os.Stat(directory); os.IsNotExist(err) {
+		// try creating a new directory
+		if err := os.Mkdir(directory, 0755); err != nil {
+			fmt.Println("Error creating directory for database", err)
+			return err
+		} else {
+			fmt.Println("New directory for database created!")
+			return nil
+		}
+	} else {
+		return nil
+	}
 }
