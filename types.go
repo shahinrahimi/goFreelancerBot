@@ -1,6 +1,5 @@
 package main
 
-import "time"
 
 type ResultProjects struct {
 	Projects   []Project `json:"projects"`
@@ -190,6 +189,4 @@ type Project struct {
 	FrontendStatus string   `json:"frontend_project_status"`
 	Location       Location `json:"location"`
 	Local          bool     `json:"local"`
-
-	UpdatedAt time.Time `json:"updated_at"`
 }
